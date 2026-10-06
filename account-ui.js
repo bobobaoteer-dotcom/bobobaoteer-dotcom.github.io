@@ -10,6 +10,8 @@ async function request(path, method = 'GET', body) {
 }
 
 export async function accountStatus() {
+  if (typeof document !== 'undefined' && document.querySelector('meta[name="liunian-static-beta"]'))
+    return {available:false, authenticated:false, account:null};
   try {return {available:true, ...(await request('/v1/auth/session'))};}
   catch {return {available:false, authenticated:false, account:null};}
 }

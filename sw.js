@@ -1,4 +1,4 @@
-const CACHE = 'pet-life-shell-v25';
+const CACHE = 'pet-life-shell-v26';
 const SHELL = ['/', '/index.html', '/life.css', '/life-care.css', '/album.css', '/life-app.js', '/album.js', '/first-use.js', '/account-ui.js', '/local-scope.js', '/backup-crypto.js', '/backup-service.js', '/life-ui.js', '/life-care.js', '/ui-config.js', '/layout-editor.js', '/db.js', '/assets/inter-latin.woff2', '/assets/life/hero.webp', '/assets/life/community-walk.webp', '/assets/life/community-home.webp', '/assets/life/grooming.webp', '/icon.svg', '/manifest.webmanifest'];
 self.addEventListener('install', event => {event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)));self.skipWaiting();});
 self.addEventListener('activate', event => {event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('pet-') && key !== CACHE).map(key => caches.delete(key)))).then(()=>self.clients.claim()));});
