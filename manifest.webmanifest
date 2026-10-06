@@ -1,0 +1,13 @@
+{
+  "name": "留念 · 宠物生活",
+  "short_name": "留念",
+  "description": "记录生活，安排照护，和它一起把日子过好",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
