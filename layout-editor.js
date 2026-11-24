@@ -146,7 +146,7 @@ export const LAYOUT_TARGETS = [
   { id: "upload.type", page: "照片上传", label: "宠物类型选择", selector: "#pet-type" },
   { id: "upload.traits", page: "照片上传", label: "宠物习惯输入框", selector: "#pet-traits" },
   { id: "settings.counts", page: "我的", label: "生活记录与收藏统计", selector: ".profile-counts" },
-  { id: "settings.album", page: "我的", label: "时光相册 Banner", selector: ".album-banner" },
+  { id: "settings.album", page: "我的", label: "时光相册入口", selector: ".settings-album-row" },
   { id: "settings.menu", page: "我的", label: "我的功能菜单", selector: ".settings-shell .menu-group" },
   { id: "settings.menuRow", page: "我的", label: "单项功能入口", selector: ".settings-shell .menu-row" },
   { id: "settings.dataHeader", page: "资料与备份", label: "资料页顶部导航", selector: ".data-shell .screen-header" },

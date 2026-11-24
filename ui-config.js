@@ -4,7 +4,7 @@ export const MODULE_LABELS = { intro: '首页顶部', banner: '社区精选 Bann
 export const NAV_LABELS = { home: '我家', checkins: '照护', memories: '时光', community: '社区', settings: '我的' };
 export const ACTION_LABELS = { photo: '首页照片与视频', edit: '编辑宠物资料' };
 export const PRESETS = {
-  life: { name: '晴日生活', paper: '#f4f4f3', cream: '#ffffff', ink: '#20211e', muted: '#747570', accent: '#cc4b27', line: '#e9e9e5' },
+  life: { name: '晴日生活', paper: '#f5f3ee', cream: '#fffdfa', ink: '#252421', muted: '#706d67', accent: '#c25239', line: '#eae6df' },
   blush: { name: '莓粉陪伴', paper: '#ffcee0', cream: '#fbfbfa', ink: '#171515', muted: '#756f70', accent: '#ef285c', line: '#eadce0' },
   memory: { name: '暖纸相册', paper: '#f4f2ec', cream: '#fdfcf9', ink: '#252b26', muted: '#69736a', accent: '#345442', line: '#e1e4dc' },
   forest: { name: '森林日记', paper: '#eef2eb', cream: '#ffffff', ink: '#253a30', muted: '#52695b', accent: '#375f48', line: '#cedbcf' },
@@ -16,7 +16,7 @@ export const DEFAULT_CONFIG = {
   navOrder: ['home', 'checkins', 'memories', 'community', 'settings'],
   detailOrder: ['photo', 'edit'],
   layout: {},
-  banner: { enabled: true, eyebrow: '社区里的小日子', title: '一起分享那些小事', text: '看看其他毛孩子的日常，也把你的故事慢慢留下。' },
+  banner: { enabled: true, eyebrow: '社区里的小日子', title: '社区近况', text: '最近的散步、居家和照护日常。' },
   theme: { preset: 'life', buttonShape: 'pill', buttonStyle: 'filled' },
   branding: { name: '留念', icon: '' },
 };
@@ -60,6 +60,10 @@ export function loadConfig() {
   try {
     const raw = JSON.parse(localStorage.getItem(KEY));
     if (['同一只狗 · 多个角度', '下一次，好好照顾'].includes(raw?.banner?.title)) raw.banner = clone(DEFAULT_CONFIG.banner);
+    if (raw?.banner?.title === '一起分享那些小事' && raw?.banner?.text === '看看其他毛孩子的日常，也把你的故事慢慢留下。') {
+      raw.banner.title = DEFAULT_CONFIG.banner.title;
+      raw.banner.text = DEFAULT_CONFIG.banner.text;
+    }
     return validateConfig(raw);
   }
   catch { return clone(DEFAULT_CONFIG); }

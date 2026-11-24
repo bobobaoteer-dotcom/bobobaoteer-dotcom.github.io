@@ -116,11 +116,11 @@ export async function renderCare(parts, ctx) {
     }).join('');
     const dayRecords = records.filter(item => item.date === state.date);
     const completed = tasks.filter(item => item.done).length;
-    return `<section class="lc-page"><header class="screen-header lc-header"><div><p class="lc-eyebrow">把照顾，放进每一天</p><h1>照护日常</h1></div><a class="lc-add-record" href="#checkins/new" aria-label="写一条记录">${icon('plus')}</a></header>
-      ${demo(ctx) ? '<p class="lc-demo-note">示例体验 · 待办与文字记录仅保存在这台设备</p>' : `<p class="lc-pet-note">${h(ctx.pet?.name || '它')}的小日历</p>`}
+    return `<section class="lc-page"><header class="screen-header lc-header"><div><p class="lc-eyebrow">和它一起，过好每一天</p><h1>照护日常<span class="page-title-dot" aria-hidden="true">.</span></h1></div><a class="lc-header-action" href="#checkins/new">${icon('plus')}<span>写记录</span></a></header>
+      <div class="lc-day-context">${ctx.cover ? `<img src="${h(ctx.cover)}" alt="${h(ctx.pet?.name || '它')}的照片">` : `<span class="lc-day-avatar">${icon('paw')}</span>`}<div><span>${demo(ctx) ? '示例体验' : '我家的今天'}</span><strong>${h(ctx.pet?.name || '它')}，今天也一起慢慢来。</strong><small>${tasks.length ? `今天已完成 ${completed} / ${tasks.length} 件小事` : '先添加一件想为它做的小事'}</small></div></div>
       <div class="lc-calendar"><div class="lc-calendar-heading"><h2>${selected.getFullYear()} 年 ${selected.getMonth() + 1} 月</h2><div class="lc-calendar-actions"><button type="button" class="lc-today" data-lc-today>今天</button><button type="button" class="lc-icon-button" data-lc-shift="-7" aria-label="上一周">${icon('arrow-left')}</button><button type="button" class="lc-icon-button" data-lc-shift="7" aria-label="下一周">${icon('chevron-right')}</button></div></div><div class="lc-week">${days}</div></div>
       <section class="lc-section"><div class="lc-section-heading"><h2>${state.date === ctx.today() ? '今日' : `${selected.getMonth() + 1} 月 ${selected.getDate()} 日`}待办 <span>${completed}/${tasks.length}</span></h2><button type="button" class="lc-text-button" data-lc-manage>${state.manage ? '完成管理' : '管理'}</button></div><div class="lc-task-list">${tasks.map(task => taskRow(task, state.date, ctx)).join('') || message(ctx, '这一天还没有安排，按自己的节奏来。')}</div>${state.addTask ? taskForm(ctx, state.date) : `<button class="lc-add-task" type="button" data-lc-add-task>${icon('plus')}添加待办</button>`}</section>
-      <section class="lc-section lc-record-section"><div class="lc-section-heading"><h2>这一天的小事</h2><a class="lc-text-button" href="#checkins/new">记一笔 ${icon('plus')}</a></div>${dayRecords.length ? `<div class="lc-record-list">${dayRecords.map(item => recordCard(item, ctx)).join('')}</div>` : `<div class="lc-record-empty"><span>${icon('heart')}</span><h3>平常的一天，也值得留下</h3><p>散步的新路线，吃饭的小习惯，<br>或只是今天一起晒过的太阳。</p><a href="#checkins/new" class="lc-record-empty-link">写下第一条记录 ${icon('chevron-right')}</a></div>`}</section>
+      <section class="lc-section lc-record-section"><div class="lc-section-heading"><h2>这一天的小事</h2></div>${dayRecords.length ? `<div class="lc-record-list">${dayRecords.map(item => recordCard(item, ctx)).join('')}</div>` : `<div class="lc-record-empty"><span>${icon('heart')}</span><h3>平常的一天，也值得留下</h3><p>散步的新路线，吃饭的小习惯，<br>或只是今天一起晒过的太阳。</p><a href="#checkins/new" class="lc-record-empty-link">写下第一条记录 ${icon('chevron-right')}</a></div>`}</section>
     </section>`;
   } catch (error) {
     return `<section class="lc-page"><header class="screen-header"><h1>照护日常</h1></header><p class="lc-error" role="alert">${h(errorMessage(error, '照护数据暂时无法读取'))}</p><button class="button" data-lc-retry type="button">重新加载</button></section>`;
@@ -173,7 +173,13 @@ export function bindCare(root, ctx) {
       } else if (button.hasAttribute('data-lc-select-date')) { view(ctx).date = button.dataset.lcSelectDate; await ctx.rerender(); }
       else if (button.hasAttribute('data-lc-shift')) { view(ctx).date = offsetDate(view(ctx).date, Number(button.dataset.lcShift)); await ctx.rerender(); }
       else if (button.hasAttribute('data-lc-today')) { view(ctx).date = ctx.today(); await ctx.rerender(); }
-      else if (button.hasAttribute('data-lc-add-task')) { view(ctx).addTask = true; await ctx.rerender(); root.querySelector('[data-lc-task-form] input[name="title"]')?.focus(); }
+      else if (button.hasAttribute('data-lc-add-task')) {
+        view(ctx).addTask = true;
+        await ctx.rerender();
+        const form = document.querySelector('#screen [data-lc-task-form]');
+        form?.scrollIntoView({ block: 'center', behavior: 'auto' });
+        form?.querySelector('input[name="title"]')?.focus({ preventScroll: true });
+      }
       else if (button.hasAttribute('data-lc-cancel-task')) { view(ctx).addTask = false; await ctx.rerender(); }
       else if (button.hasAttribute('data-lc-manage')) { view(ctx).manage = !view(ctx).manage; await ctx.rerender(); }
       else if (button.hasAttribute('data-lc-remove-task')) {
